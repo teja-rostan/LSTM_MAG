@@ -1,8 +1,4 @@
 import pandas as pd
-import numpy as np
-from keras.models import Sequential
-from keras.layers import LSTM, Dense
-from sklearn.metrics import mean_squared_error
 from matplotlib import pyplot as plt
 
 
@@ -31,42 +27,11 @@ train_X, train_y = train[:, 0], train[:, 1]
 test_X, test_y = test[:, 0], test[:, 1]
 
 
-#################
-# Vanilla LSTMs #
-#################
 
 
-# one hot encode sequence
-def one_hot_encode(sequence, n_features):
-    encoding = np.zeros((len(sequence), n_features))
-    for i, value in enumerate(sequence):
-        encoding[i, value] = 1
-    return encoding
 
 
-# decode a one hot encoded string
-def one_hot_decode(encoded_seq):
-    return np.argmax(encoded_seq, axis=1)
 
-
-# generate one example for an lstm
-def generate_example(length, n_features, out_index):
-    sequence = np.random.randint(n_features, size=length)
-    encoded = one_hot_encode(sequence, n_features)
-    X = encoded.reshape((1, length, n_features))
-    y = encoded[out_index].reshape(1, n_features)
-    return X, y
-
-
-# define model
-length = 5
-n_features = 10
-out_index = 2
-model = Sequential()
-model.add(LSTM(25, input_shape=(length, n_features)))
-model.add(Dense(n_features, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-print(model.summary())
 
 
 
